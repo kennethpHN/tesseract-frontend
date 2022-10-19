@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TodoForm from "./TodoForm";
 import Todo from "./Todo";
+import axios from "axios";
 import { useEffect } from "react";
 
 function TodoList() {
@@ -17,6 +18,12 @@ function TodoList() {
 
     const newTodos = [todo, ...todos];
 
+    //Codigo agregado para conectar a la api
+    axios.post("http://localhost:3000/to-dos", {
+      ...todo,
+    });
+
+    //
     setTodos(newTodos);
     console.log(...todos);
   };
