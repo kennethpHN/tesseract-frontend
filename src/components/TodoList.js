@@ -3,24 +3,32 @@ import TodoForm from "./TodoForm";
 import Todo from "./Todo";
 import axios from "axios";
 import { useEffect } from "react";
+import { getToDos, patchToDo } from "../util/api";
 
 function TodoList() {
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
-    console.log(todos);
-  }, [todos]);
+    getToDos().then((remoteTodos)=> {
+      setTodos(remoteTodos);
+    });
+  }, []);
 
-  const addTodo = (todo) => {
+  const addTodo = (todo) =>  {
     if (!todo.text || /^\s*$/.test(todo.text)) {
       return;
     }
 
-    const newTodos = [todo, ...todos];
+    const newTodos = [todo];
 
     //Codigo agregado para conectar a la api
     axios.post("http://localhost:3000/to-dos", {
       ...todo,
+      title: todo.text,
+    }).then(()=>{
+      getToDos().then((remoteTodos)=> {
+        setTodos(remoteTodos);
+      });
     });
 
     //
@@ -43,25 +51,34 @@ function TodoList() {
       return;
     }
 
-    setTodos((prev) =>
-      prev.map((item) => (item.id === todoId ? newValue : item))
-    );
+    patchToDo(todoId,newValue).then(()=>{
+      setTodos();
+      getToDos().then((remoteTodos)=> {
+        setTodos(remoteTodos);
+      });
+    });
+
   };
 
   const removeTodo = (id) => {
-    const removedArr = [...todos].filter((todo) => todo.id !== id);
-
-    setTodos(removedArr);
+    axios.delete(`http://localhost:3000/to-dos/${id}`).then(()=>{
+      getToDos().then((remoteTodos)=> {
+        setTodos(remoteTodos);
+      });
+    });
   };
 
   const completeTodo = (id) => {
-    let updatedTodos = todos.map((todo) => {
+    todos.map((todo) => {
       if (todo.id === id) {
-        todo.isComplete = !todo.isComplete;
+        patchToDo(id,{...todo, isDone: !todo.isComplete}).then(()=>{
+          setTodos();
+          getToDos().then((remoteTodos)=> {
+            setTodos(remoteTodos);
+          });
+        });
       }
-      return todo;
     });
-    setTodos(updatedTodos);
   };
 
   return (
