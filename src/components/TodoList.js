@@ -52,7 +52,6 @@ function TodoList() {
     }
 
     patchToDo(todoId,newValue).then(()=>{
-      setTodos();
       getToDos().then((remoteTodos)=> {
         setTodos(remoteTodos);
       });
@@ -71,8 +70,8 @@ function TodoList() {
   const completeTodo = (id) => {
     todos.map((todo) => {
       if (todo.id === id) {
-        patchToDo(id,{...todo, isDone: !todo.isComplete}).then(()=>{
-          setTodos();
+        patchToDo(id,{...todo, isDone: todo.isComplete ===1 ? 0: 1}).then(()=>{
+          //setTodos();
           getToDos().then((remoteTodos)=> {
             setTodos(remoteTodos);
           });
