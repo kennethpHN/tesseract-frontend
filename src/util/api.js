@@ -17,6 +17,7 @@ export async function patchToDo(todoId, newValues){
         axios.patch(`http://localhost:3000/to-dos/${todoId}`, {
             ...newValues,
             title: newValues.text,
+            //isDone: newValues.isDone
           });
     } catch (error) {
         console.error(error.mesage);

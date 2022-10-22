@@ -34,7 +34,7 @@ const Todo = ({
   return todos.map((todo, index) => (
     // <div>
     <div
-      className={todo.isComplete === 1 ? "todo-row complete" : "todo-row"}
+      className={todo.is_done ? "todo-row complete" : "todo-row"}
       key={index}
     >
       <div className="description">

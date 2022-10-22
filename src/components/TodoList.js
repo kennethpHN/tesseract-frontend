@@ -67,17 +67,17 @@ function TodoList() {
     });
   };
 
+
   const completeTodo = (id) => {
-    todos.map((todo) => {
+    let updatedtodos = todos.map((todo) => {
       if (todo.id === id) {
-        patchToDo(id,{...todo, isDone: todo.isComplete ===1 ? 0: 1}).then(()=>{
-          //setTodos();
-          getToDos().then((remoteTodos)=> {
-            setTodos(remoteTodos);
-          });
-        });
+        todo.is_done = !todo.is_done
+        patchToDo(id,{...todo })
+
       }
+      return todo;
     });
+    setTodos(updatedtodos)
   };
 
   return (
