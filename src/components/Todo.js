@@ -43,7 +43,8 @@ const Todo = ({
           onClick={() => completeTodo(todo.id)}
           className="todo"
         >
-          {todo.title}
+          <div >{todo.date}</div>
+          <b>{todo.title}</b>
         </div>
         <div className="icons">
           <RiCheckboxCircleLine
@@ -69,11 +70,14 @@ const Todo = ({
             className="edit-icon"
           />
         </div>
+        
       </div>
       {todo.showDescription && (
         <div onClick={() => completeTodo(todo.id)} className="description">
-          Description: {todo.description}
+          Description: {todo.description} 
         </div>
+        
+        
       )}
     </div>
     // </div>
